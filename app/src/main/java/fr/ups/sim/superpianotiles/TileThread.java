@@ -8,29 +8,42 @@ import java.util.TimerTask;
  */
 public class TileThread extends Thread {
 
+
+    class MonAction extends TimerTask {
+        private PianoTiles game;
+
+        public MonAction(PianoTiles game){
+            this.game = game;
+        }
+
+        public void run() {
+            System.err.println("Ajout Tuile lololololol");
+            game.newTile();
+        }
+    }
+
     private PianoTiles game ;
+    private TilesView tilesView;
 
 
-    public TileThread(PianoTiles game)
+    public TileThread(PianoTiles game, TilesView t)
     {
         super() ;
         this.game = game ;
+        this.tilesView = t;
     }
 
-    public void newTile()
+    @Override
+    public void run()
     {
-        Timer timer = new Timer() ;
-        int delay = 3000 ;
-
-        timer.schedule(
-                new TimerTask()
-                {   public void run() {
-                        game.newTile();
-                    }
-                },
-                delay) ;
+        while (true) {
+            System.err.println("Affiche");
+            this.tilesView.setGame(this.game);
+            this.tilesView.invalidate();
+        }
 
     }
+
 
 
 

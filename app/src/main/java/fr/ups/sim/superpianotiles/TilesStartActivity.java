@@ -8,18 +8,41 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.logging.Logger;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TilesStartActivity extends Activity {
 
-    private PianoTiles game = new PianoTiles();
+
+    class MonAction extends TimerTask {
+        private PianoTiles game;
+
+        public MonAction(PianoTiles game){
+            this.game = game;
+        }
+
+        public void run() {
+            System.err.println("Ajout Tuile lololololol");
+            this.game.newTile();
+
+        }
+
+
+    }
+
+    private PianoTiles game;
     private TilesView tilesView;
+    private Timer t;
+    private Thread th;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tiles_start);
+
+        this.game = new PianoTiles();
+
 
 
         //On récupère la view (JFrame en SWING) du jeu
@@ -34,6 +57,22 @@ public class TilesStartActivity extends Activity {
 
             }
         });
+
+        this.th = new TileThread(this.game,this.tilesView);
+        this.th.run();
+
+        this.t = new Timer() ;
+        int delay = 0 ;
+        long period = 3000;
+
+        t.schedule(
+                new MonAction(this.game),
+                delay,
+                period) ;
+
+
+
+
     }
 
     @Override
@@ -73,12 +112,14 @@ public class TilesStartActivity extends Activity {
                             this.tilesView.getWidth()))
                 {
 
-                    this.game.newTile();
-                    this.tilesView.setGame(this.game);
+                    //this.game.newTile();
+                    //this.tilesView.setGame(this.game);
 
-                    this.tilesView.invalidate();
+                    //this.tilesView.invalidate();
                  }
                 else {
+                    this.t.cancel();
+                    this.th.interrupt();
                     setContentView(R.layout.game_over);
                 }
                 break;
@@ -91,3 +132,51 @@ public class TilesStartActivity extends Activity {
         return true;
     }
 }
+
+
+/*yes java's timer can be used, but as the question asks for better way (for mobile). Which is explained Here.
+
+For the sake of StackOverflow:
+
+Since Timer creates a new thread it may be considered heavy,
+
+if all you need is to get is a call back while the activity is running a Handler can be used in conjunction with a
+
+Runnable:
+
+private final int interval = 1000; // 1 Second
+private Handler handler = new Handler();
+private Runnable runnable = new Runnable(){
+    public void run() {
+        Toast.makeText(MyActivity.this, "C'Mom no hands!", Toast.LENGTH_SHORT).show();
+    }
+};
+...
+handler.postAtTime(runnable, System.currentTimeMillis()+interval);
+handler.postDelayed(runnable, interval);
+or a Mesage
+
+private final int EVENT1 = 1;
+private Handler handler = new Handler() {
+    @Override
+    public void handleMessage(Message msg) {
+        switch (msg.what) {
+        case Event1:
+            Toast.makeText(MyActivity.this, "Event 1", Toast.LENGTH_SHORT).show();
+            break;
+
+        default:
+            Toast.makeText(MyActivity.this, "Unhandled", Toast.LENGTH_SHORT).show();
+            break;
+        }
+    }
+};
+
+...
+
+Message msg = handler.obtainMessage(EVENT1);
+handler.sendMessageAtTime(msg, System.currentTimeMillis()+interval);
+handler.sendMessageDelayed(msg, interval);
+on a side note this approach can be used, if you want to run a piece of code in the UI thread from an another thread.
+
+if you need to get a call back even if your activity is not running then, you can use an AlarmManager*/
