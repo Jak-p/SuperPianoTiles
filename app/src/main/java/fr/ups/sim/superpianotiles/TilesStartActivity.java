@@ -58,6 +58,9 @@ public class TilesStartActivity extends Activity {
             }
         });
 
+        this.th = new TileThread(this.game,this.tilesView);
+        this.th.run();
+
         this.t = new Timer() ;
         int delay = 0 ;
         long period = 3000;
@@ -68,8 +71,7 @@ public class TilesStartActivity extends Activity {
                 period) ;
 
 
-        this.th = new TileThread(this.game,this.tilesView);
-        this.th.run();
+
 
     }
 
@@ -130,3 +132,51 @@ public class TilesStartActivity extends Activity {
         return true;
     }
 }
+
+
+/*yes java's timer can be used, but as the question asks for better way (for mobile). Which is explained Here.
+
+For the sake of StackOverflow:
+
+Since Timer creates a new thread it may be considered heavy,
+
+if all you need is to get is a call back while the activity is running a Handler can be used in conjunction with a
+
+Runnable:
+
+private final int interval = 1000; // 1 Second
+private Handler handler = new Handler();
+private Runnable runnable = new Runnable(){
+    public void run() {
+        Toast.makeText(MyActivity.this, "C'Mom no hands!", Toast.LENGTH_SHORT).show();
+    }
+};
+...
+handler.postAtTime(runnable, System.currentTimeMillis()+interval);
+handler.postDelayed(runnable, interval);
+or a Mesage
+
+private final int EVENT1 = 1;
+private Handler handler = new Handler() {
+    @Override
+    public void handleMessage(Message msg) {
+        switch (msg.what) {
+        case Event1:
+            Toast.makeText(MyActivity.this, "Event 1", Toast.LENGTH_SHORT).show();
+            break;
+
+        default:
+            Toast.makeText(MyActivity.this, "Unhandled", Toast.LENGTH_SHORT).show();
+            break;
+        }
+    }
+};
+
+...
+
+Message msg = handler.obtainMessage(EVENT1);
+handler.sendMessageAtTime(msg, System.currentTimeMillis()+interval);
+handler.sendMessageDelayed(msg, interval);
+on a side note this approach can be used, if you want to run a piece of code in the UI thread from an another thread.
+
+if you need to get a call back even if your activity is not running then, you can use an AlarmManager*/
