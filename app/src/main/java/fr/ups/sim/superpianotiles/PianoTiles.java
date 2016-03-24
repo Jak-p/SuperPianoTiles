@@ -53,12 +53,12 @@ public class PianoTiles {
             " top : "+top+" bot: "+bot);
 
             //Coucou ma pute
-            /*return (x >= (width - width * pos[2]/5) &&
-                    x <= (width * pos[0]/5) &&
-                    y <= (bottom * pos[1]/4) &&
-                    y >= (bottom - bottom * pos[3]/4));*/
+            return (x >= (left) &&
+                    x <= (right) &&
+                    y >= (top) &&
+                    y <= (bot));
 
-            return true;
+           // return true;
         }
     }
 
