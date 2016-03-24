@@ -73,18 +73,8 @@ public class TilesView extends View {
 
         int left,top,right,bottom;
 
-        /*//Tile 1
-        int left = 0;
-        int top = getBottom() * 3 / 4;
-        int right = getWidth()/5;
-        int bottom = getBottom();
-        addTile("1", new RectF(left, top, right, bottom), canvas);*/
 
-        left = getWidth()*0/5;
-        top = getBottom()* 3 / 4;
-        right = getWidth()-getWidth()*4/5;
-        bottom = getBottom()-getBottom() * 0/4;
-        addTile("2", new RectF(left, top, right, bottom), canvas);
+
 
         if (!this.game.getTiles().isEmpty())
         for (Tiles t : this.game.getTiles()) {
@@ -96,12 +86,6 @@ public class TilesView extends View {
             bottom = getBottom() - getBottom()*tab[3]/4;
             addTile(t.toString(), new RectF(left, top, right, bottom), canvas);
 
-           /* //Tile 2
-            left = getWidth()*3/5;
-            top = getBottom()- getBottom() * 3 / 4;
-            right = getWidth()-getWidth()/5;
-            bottom = getBottom()/2;
-            addTile("2", new RectF(left, top, right, bottom), canvas);*/
         }
 
         // Draw the example drawable on top of the text.
