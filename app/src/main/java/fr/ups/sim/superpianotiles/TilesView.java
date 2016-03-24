@@ -76,6 +76,8 @@ public class TilesView extends View {
 
 
 
+        System.err.println(this.game.getTiles().isEmpty());
+
         if (!this.game.getTiles().isEmpty())
         for (Tiles t : this.game.getTiles()) {
             System.err.println("On dessine une tuile");
