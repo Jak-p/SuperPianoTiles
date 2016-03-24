@@ -49,6 +49,10 @@ public class PianoTiles {
             float right = width-width *tab[2]/5;
             float bot = bottom - bottom*tab[3]/4;
 
+            System.err.println("x: "+x+" y: "+y+"left: "+left+" right: "+right+
+            " top : "+top+" bot: "+bot);
+
+            //Coucou ma pute
             /*return (x >= (width - width * pos[2]/5) &&
                     x <= (width * pos[0]/5) &&
                     y <= (bottom * pos[1]/4) &&
