@@ -1,6 +1,7 @@
 package fr.ups.sim.superpianotiles;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -9,7 +10,7 @@ import java.util.Set;
  */
 public class PianoTiles {
 
-    private Set<Tiles> tilesList = new HashSet<Tiles>();
+    private Set<Tiles> tilesList = new LinkedHashSet<Tiles>();
     private int score;
     private Tiles nextTile;
     protected Random rand;
@@ -30,9 +31,9 @@ public class PianoTiles {
             int top = this.rand.nextInt(3+1);
             int left = this.rand.nextInt(4+1);
             Integer num = this.tilesList.size();
-            this.nextTile = new Tiles(num.toString(),top,left);
 
-            ajoute = this.tilesList.add(this.nextTile);
+            ajoute = this.tilesList.add(new Tiles(num.toString(),top,left));
+            this.nextTile = this.tilesList.iterator().next();
 
         }
     }
@@ -52,6 +53,13 @@ public class PianoTiles {
             System.err.println("x: "+x+" y: "+y+"left: "+left+" right: "+right+
             " top : "+top+" bot: "+bot);
 
+            this.removeNextTile();
+            if (!this.tilesList.isEmpty())
+                this.nextTile = this.tilesList.iterator().next();
+            else
+                this.nextTile = null;
+
+
             //Coucou ma pute
             return (x >= (left) &&
                     x <= (right) &&
@@ -66,7 +74,7 @@ public class PianoTiles {
         return this.tilesList;
     }
 
-    public void removeNextTile() {
+    private void removeNextTile() {
         if (this.nextTile != null)
             this.tilesList.remove(this.nextTile);
     }

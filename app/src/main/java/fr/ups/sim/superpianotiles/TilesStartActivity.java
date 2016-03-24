@@ -72,13 +72,15 @@ public class TilesStartActivity extends Activity {
                 if (this.game.isCorrectTileTouched(evt.getX(), evt.getY(), this.tilesView.getBottom(),
                             this.tilesView.getWidth()))
                 {
-                    this.game.removeNextTile();
 
                     this.game.newTile();
                     this.tilesView.setGame(this.game);
 
                     this.tilesView.invalidate();
                  }
+                else {
+                    setContentView(R.layout.game_over);
+                }
                 break;
         }
 
