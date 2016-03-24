@@ -8,18 +8,41 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.logging.Logger;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TilesStartActivity extends Activity {
 
-    private PianoTiles game = new PianoTiles();
+
+    class MonAction extends TimerTask {
+        private PianoTiles game;
+
+        public MonAction(PianoTiles game){
+            this.game = game;
+        }
+
+        public void run() {
+            System.err.println("Ajout Tuile lololololol");
+            this.game.newTile();
+
+        }
+
+
+    }
+
+    private PianoTiles game;
     private TilesView tilesView;
+    private Timer t;
+    private Thread th;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tiles_start);
+
+        this.game = new PianoTiles();
+
 
 
         //On récupère la view (JFrame en SWING) du jeu
@@ -34,6 +57,20 @@ public class TilesStartActivity extends Activity {
 
             }
         });
+
+        this.t = new Timer() ;
+        int delay = 0 ;
+        long period = 3000;
+
+        t.schedule(
+                new MonAction(this.game),
+                delay,
+                period) ;
+
+
+        this.th = new TileThread(this.game,this.tilesView);
+        this.th.run();
+
     }
 
     @Override
@@ -73,12 +110,14 @@ public class TilesStartActivity extends Activity {
                             this.tilesView.getWidth()))
                 {
 
-                    this.game.newTile();
-                    this.tilesView.setGame(this.game);
+                    //this.game.newTile();
+                    //this.tilesView.setGame(this.game);
 
-                    this.tilesView.invalidate();
+                    //this.tilesView.invalidate();
                  }
                 else {
+                    this.t.cancel();
+                    this.th.interrupt();
                     setContentView(R.layout.game_over);
                 }
                 break;

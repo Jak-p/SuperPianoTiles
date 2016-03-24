@@ -41,7 +41,7 @@ public class PianoTiles {
     public boolean isCorrectTileTouched(float x, float y, float bottom, float width) {
 
         if (this.nextTile == null)
-            return true;
+            return false;
         else{
             int[] tab = this.nextTile.getPos();
 
