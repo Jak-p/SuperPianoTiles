@@ -13,12 +13,14 @@ public class PianoTiles {
     private Set<Tiles> tilesList = new LinkedHashSet<Tiles>();
     private int score;
     private Tiles nextTile;
+    private int lastAdded;
     protected Random rand;
 
     public PianoTiles() {
         this.score = 0;
         this.rand = new Random();
         this.nextTile = null;
+        this.lastAdded = 0;
     }
 
     public void newTile() {
@@ -30,8 +32,8 @@ public class PianoTiles {
 
             int top = this.rand.nextInt(3+1);
             int left = this.rand.nextInt(4+1);
-            Integer num = this.tilesList.size();
-
+            Integer num = this.lastAdded;
+            this.lastAdded++;
             ajoute = this.tilesList.add(new Tiles(num.toString(),top,left));
             this.nextTile = this.tilesList.iterator().next();
 
@@ -41,7 +43,7 @@ public class PianoTiles {
     public boolean isCorrectTileTouched(float x, float y, float bottom, float width) {
 
         if (this.nextTile == null)
-            return false;
+            return true;
         else{
             int[] tab = this.nextTile.getPos();
 
