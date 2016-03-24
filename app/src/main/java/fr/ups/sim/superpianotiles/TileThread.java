@@ -23,24 +23,21 @@ public class TileThread extends Thread {
     }
 
     private PianoTiles game ;
-    private TilesView tilesView;
+    private TilesView t;
+    private TilesStartActivity tt;
 
 
-    public TileThread(PianoTiles game, TilesView t)
+    public TileThread(PianoTiles game, TilesView t, TilesStartActivity tt)
     {
         super() ;
-        this.game = game ;
-        this.tilesView = t;
+        this.t = t;
+        this.game = game;
+        this.tt = tt;
     }
 
     @Override
     public void run()
     {
-        while (true) {
-            System.err.println("Affiche");
-            this.tilesView.setGame(this.game);
-            this.tilesView.invalidate();
-        }
 
     }
 

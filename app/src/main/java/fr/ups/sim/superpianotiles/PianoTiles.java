@@ -27,17 +27,22 @@ public class PianoTiles {
 
         boolean ajoute = false;
 
+        Integer num = this.lastAdded;
 
         while(!ajoute) {
 
+
             int top = this.rand.nextInt(3+1);
             int left = this.rand.nextInt(4+1);
-            Integer num = this.lastAdded;
-            this.lastAdded++;
-            ajoute = this.tilesList.add(new Tiles(num.toString(),top,left));
-            this.nextTile = this.tilesList.iterator().next();
+            Tiles a = new Tiles(num.toString(), top, left);
+            if (!this.tilesList.contains(a))
+                ajoute = this.tilesList.add(a);
 
         }
+
+        this.nextTile = this.tilesList.iterator().next();
+
+        this.lastAdded++;
     }
 
     public boolean isCorrectTileTouched(float x, float y, float bottom, float width) {

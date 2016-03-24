@@ -30,14 +30,15 @@ public class Tiles {
             Tiles compare = (Tiles) o;
             int[] posThis = this.getPos();
             int[] posComp = compare.getPos();
-            return ((posThis[1] == posComp[1]) && (posThis[2] == posComp[2]));
+            return ((posThis[1] == posComp[1]) && (posThis[2] == posComp[2]) &&
+                    (posThis[0] == posComp[0]) && (posThis[3] == posComp[3]));
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return (19*this.order.hashCode()*this.top*this.right);
+        return (19);
     }
 
 
