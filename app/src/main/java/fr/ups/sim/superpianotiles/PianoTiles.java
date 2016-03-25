@@ -15,12 +15,14 @@ public class PianoTiles {
     private Tiles nextTile;
     private int lastAdded;
     protected Random rand;
+    private Difficulte dif;
 
     public PianoTiles() {
         this.score = 0;
         this.rand = new Random();
         this.nextTile = null;
         this.lastAdded = 0;
+        this.dif = Difficulte.MOYEN;
     }
 
     public void newTile() {
@@ -92,5 +94,13 @@ public class PianoTiles {
 
     public void incrementeScore() {
         this.score++;
+    }
+
+    public void setDifficulte(Difficulte d) {
+        this.dif = d;
+    }
+
+    public int getDifficulte() {
+        return this.dif.ordinal();
     }
 }

@@ -7,8 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.RadioGroup;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -99,6 +98,36 @@ public class TilesStartActivity extends Activity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             // ICI - A compléter pour déclencher l'ouverture de l'écran de paramétrage
+
+            setContentView(R.layout.settings);
+            RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+            radioGroup.check(this.game.getDifficulte());
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+            {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    // checkedId is the RadioButton selected
+
+                    switch(checkedId) {
+                        case R.id.radioButton:
+
+                            // Facile
+                            game.setDifficulte(Difficulte.FACILE);
+
+                            break;
+                        case R.id.radioButton2:
+
+                            // Moyen
+                            game.setDifficulte(Difficulte.MOYEN);
+
+                            break;
+                        case R.id.radioButton3:
+                            //Difficile
+                            game.setDifficulte(Difficulte.DIFFICILE);
+                            break;
+                    }
+                }
+            });
             return true;
         }
 
@@ -121,20 +150,13 @@ public class TilesStartActivity extends Activity {
 
                     //this.game.newTile();
                     this.tilesView.setGame(this.game);
-                    this.game.incrementeScore();
+
                     this.tilesView.invalidate();
                  }
                 else {
                     this.t.cancel();
                     //this.th.interrupt();
                     setContentView(R.layout.game_over);
-                    ((TextView)findViewById(R.id.textView2)).setText("Your score is " + this.game.getScore());
-                    ((Button)findViewById(R.id.button)).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onCreate(Bundle.EMPTY);
-                        }
-                    });
                 }
                 break;
         }
