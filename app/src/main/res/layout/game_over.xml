@@ -15,5 +15,11 @@
             android:text="@string/game_over"
             android:id="@+id/textView"
             android:layout_gravity="center" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_gravity="left|top" />
     </FrameLayout>
 </LinearLayout>
