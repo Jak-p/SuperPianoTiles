@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -119,13 +120,14 @@ public class TilesStartActivity extends Activity {
 
                     //this.game.newTile();
                     this.tilesView.setGame(this.game);
-
+                    this.game.incrementeScore();
                     this.tilesView.invalidate();
                  }
                 else {
                     this.t.cancel();
                     //this.th.interrupt();
                     setContentView(R.layout.game_over);
+                    ((TextView)findViewById(R.id.textView2)).setText("Your score is "+this.game.getScore());
                 }
                 break;
         }
