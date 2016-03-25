@@ -1,13 +1,16 @@
 package fr.ups.sim.superpianotiles;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,6 +41,7 @@ public class TilesStartActivity extends Activity {
     private TilesView tilesView;
     private Timer t;
     private Thread th;
+    private MediaPlayer music;
 
 
     @Override
@@ -45,6 +49,8 @@ public class TilesStartActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tiles_start);
 
+        music = MediaPlayer.create(this,R.raw.music);
+        music.start();
         this.game = new PianoTiles();
 
 
@@ -150,13 +156,26 @@ public class TilesStartActivity extends Activity {
 
                     //this.game.newTile();
                     this.tilesView.setGame(this.game);
-
+                    this.game.incrementeScore();
                     this.tilesView.invalidate();
                  }
                 else {
                     this.t.cancel();
+
+                    music.pause();
+                    music =  MediaPlayer.create(this,R.raw.crash);
+                    music.start();
+
                     //this.th.interrupt();
+
                     setContentView(R.layout.game_over);
+                    ((TextView)findViewById(R.id.textView2)).setText("Your score is " + this.game.getScore());
+                    ((Button)findViewById(R.id.button)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onCreate(Bundle.EMPTY);
+                        }
+                    });
                 }
                 break;
         }
