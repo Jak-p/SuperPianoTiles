@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -251,9 +252,9 @@ public class TilesStartActivity extends Activity {
         music.start();
 
 
-        setContentView(R.layout.game_over);
+        setContentView(R.layout.game_over_bis);
         ((TextView)findViewById(R.id.textView2)).setText("Your score is " + this.game.getScore());
-        ((Button)findViewById(R.id.button)).setOnClickListener(new View.OnClickListener() {
+        ((ImageButton)findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createGame(Difficulte.values()[game.getDifficulte()]
