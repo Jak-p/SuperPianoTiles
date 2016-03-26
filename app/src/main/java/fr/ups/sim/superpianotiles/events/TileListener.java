@@ -8,4 +8,5 @@ import java.util.EventListener;
 public interface TileListener extends EventListener {
 
     public void nbTileChanged(TileEvent event);
+
 }
