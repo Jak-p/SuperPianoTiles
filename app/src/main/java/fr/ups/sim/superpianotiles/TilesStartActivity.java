@@ -10,18 +10,11 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
-import fr.ups.sim.superpianotiles.events.TileAdapter;
-import fr.ups.sim.superpianotiles.events.TileCounter;
-import fr.ups.sim.superpianotiles.events.TileEvent;
 
 public class TilesStartActivity extends Activity {
 
@@ -29,7 +22,6 @@ public class TilesStartActivity extends Activity {
     class MonAction extends TimerTask {
         private PianoTiles game;
         private TilesView t;
-
 
         public MonAction(PianoTiles game, TilesView t){
             this.game = game;
@@ -39,7 +31,6 @@ public class TilesStartActivity extends Activity {
         public void run() {
             System.err.println("Ajout Tuile dans la liste");
             this.game.newTile();
-            senseur.fireNbTileChanged(this.game.getTiles().size());
             this.t.setGame(this.game);
             this.t.postInvalidate();
         }
@@ -51,9 +42,7 @@ public class TilesStartActivity extends Activity {
     private TilesView tilesView;
     private Timer t;
     private MediaPlayer music;
-    private TileCounter senseur;
-
-
+    private MediaPlayer fail;
 
 
     @Override
@@ -109,32 +98,12 @@ public class TilesStartActivity extends Activity {
 
         }
 
-        //Compteur de tuile et son listener
-        this.senseur = new TileCounter();
-        senseur.addTemperatureListener(new TileAdapter() {
-            @Override
-            public void nbTileChanged(TileEvent event) {
-                System.err.println("Le nombre de tuile a changé"+ event.getNbTiles());
-
-                if (event.getNbTiles() == 20) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            gameOver();
-                        }
-                    });
-                }
-            }
-        });
-
         t.schedule(
                 new MonAction(this.game, this.tilesView),
                 delay,
                 period) ;
 
     }
-
-
 
 
 
@@ -159,7 +128,7 @@ public class TilesStartActivity extends Activity {
 
             t.cancel();
             music.stop();
-            setContentView(R.layout.settings);
+            setContentView(R.layout.settingbis);
             RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
             radioGroup.check(R.id.radioButton2);
 
@@ -231,7 +200,22 @@ public class TilesStartActivity extends Activity {
                     this.tilesView.invalidate();
                  }
                 else {
-                    gameOver();
+                    this.t.cancel();
+
+                    music.stop();
+                    fail =  MediaPlayer.create(this,R.raw.crash);
+                    fail.start();
+
+
+                    setContentView(R.layout.game_over);
+                    ((TextView)findViewById(R.id.textView2)).setText("Your score is " + this.game.getScore());
+                    ((Button)findViewById(R.id.button)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            createGame(Difficulte.values()[game.getDifficulte()]
+                            );
+                        }
+                    });
                 }
                 break;
         }
@@ -241,25 +225,5 @@ public class TilesStartActivity extends Activity {
 
 
         return true;
-    }
-
-
-    public void gameOver() {
-        this.t.cancel();
-
-        music.stop();
-        music =  MediaPlayer.create(this,R.raw.crash);
-        music.start();
-
-
-        setContentView(R.layout.game_over_bis);
-        ((TextView)findViewById(R.id.textView2)).setText("Your score is " + this.game.getScore());
-        ((ImageButton)findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createGame(Difficulte.values()[game.getDifficulte()]
-                );
-            }
-        });
     }
 }

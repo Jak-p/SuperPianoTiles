@@ -15,7 +15,7 @@ import android.view.View;
  */
 public class TilesView extends View {
 
-    private int tileColor = Color.BLUE;
+    private int tileColor = Color.BLACK;
     private int textColor = Color.WHITE;
     private Drawable mExampleDrawable;
     private float textSize = 40;
@@ -73,6 +73,12 @@ public class TilesView extends View {
 
         int left,top,right,bottom;
 
+        canvas.drawLine(0,0,1,getHeight(),pTile);
+        canvas.drawLine(getWidth()/5,0,getWidth()/5+1,getHeight(),pTile);
+        canvas.drawLine(2*getWidth()/5,0,2*getWidth()/5+1,getHeight(),pTile);
+        canvas.drawLine(3*getWidth()/5,0,3*getWidth()/5+1,getHeight(),pTile);
+        canvas.drawLine(4*getWidth()/5,0,4*getWidth()/5+1,getHeight(),pTile);
+        canvas.drawLine(getWidth()-1,0,getWidth(),getHeight(),pTile);
 
 
 
