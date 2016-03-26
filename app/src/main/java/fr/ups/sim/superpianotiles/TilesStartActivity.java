@@ -1,6 +1,7 @@
 package fr.ups.sim.superpianotiles;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +29,7 @@ public class TilesStartActivity extends Activity {
         }
 
         public void run() {
-            System.err.println("Ajout Tuile lololololol");
+            System.err.println("Ajout Tuile dans la liste");
             this.game.newTile();
             this.t.setGame(this.game);
             this.t.postInvalidate();
@@ -40,18 +41,26 @@ public class TilesStartActivity extends Activity {
     private PianoTiles game;
     private TilesView tilesView;
     private Timer t;
-    private Thread th;
     private MediaPlayer music;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        createGame(Difficulte.MOYEN);
+        
+
+    }
+
+    public void createGame(Difficulte difficulte) {
         setContentView(R.layout.activity_tiles_start);
 
         music = MediaPlayer.create(this,R.raw.music);
         music.start();
         this.game = new PianoTiles();
+        this.game.setDifficulte(difficulte);
 
 
         //On récupère la view (JFrame en SWING) du jeu
@@ -71,16 +80,27 @@ public class TilesStartActivity extends Activity {
 
         this.t = new Timer() ;
         int delay = 0 ;
-        long period = 500;
+        long period;
+
+        switch (difficulte.ordinal()) {
+            case 0:
+                period = 750;
+                break;
+            case 1:
+                period = 500;
+                break;
+            case 2:
+                period = 300;
+                break;
+            default:
+                period = 500;
+
+        }
 
         t.schedule(
-                new MonAction(this.game,this.tilesView),
+                new MonAction(this.game, this.tilesView),
                 delay,
                 period) ;
-
-
-        //this.th = new TileThread(this.game,this.tilesView,this);
-        //this.th.run();
 
     }
 
@@ -105,16 +125,34 @@ public class TilesStartActivity extends Activity {
         if (id == R.id.action_settings) {
             // ICI - A compléter pour déclencher l'ouverture de l'écran de paramétrage
 
+            t.cancel();
+            music.stop();
             setContentView(R.layout.settings);
             RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-            radioGroup.check(this.game.getDifficulte());
+            radioGroup.check(R.id.radioButton2);
+
+            //Pré sélectionne le radioButton selon la difficulté courante
+            switch (game.getDifficulte()){
+                case 0:
+                    radioGroup.check(R.id.radioButton);
+                    break;
+                case 1:
+                    radioGroup.check(R.id.radioButton2);
+                    break;
+                case 2:
+                    radioGroup.check(R.id.radioButton3);
+                    break;
+                default:
+                    radioGroup.check(R.id.radioButton2);
+
+            }
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
             {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
                     // checkedId is the RadioButton selected
 
-                    switch(checkedId) {
+                    switch (checkedId) {
                         case R.id.radioButton:
 
                             // Facile
@@ -132,6 +170,8 @@ public class TilesStartActivity extends Activity {
                             game.setDifficulte(Difficulte.DIFFICILE);
                             break;
                     }
+
+                    createGame(Difficulte.values()[game.getDifficulte()]);
                 }
             });
             return true;
@@ -154,7 +194,6 @@ public class TilesStartActivity extends Activity {
                             this.tilesView.getWidth()))
                 {
 
-                    //this.game.newTile();
                     this.tilesView.setGame(this.game);
                     this.game.incrementeScore();
                     this.tilesView.invalidate();
@@ -162,18 +201,18 @@ public class TilesStartActivity extends Activity {
                 else {
                     this.t.cancel();
 
-                    music.pause();
+                    music.stop();
                     music =  MediaPlayer.create(this,R.raw.crash);
                     music.start();
 
-                    //this.th.interrupt();
 
                     setContentView(R.layout.game_over);
                     ((TextView)findViewById(R.id.textView2)).setText("Your score is " + this.game.getScore());
                     ((Button)findViewById(R.id.button)).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            onCreate(Bundle.EMPTY);
+                            createGame(Difficulte.values()[game.getDifficulte()]
+                            );
                         }
                     });
                 }

@@ -98,6 +98,7 @@ public class PianoTiles {
 
     public void setDifficulte(Difficulte d) {
         this.dif = d;
+        System.err.println("Difficulte changée!!!");
     }
 
     public int getDifficulte() {
