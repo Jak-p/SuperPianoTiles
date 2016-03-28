@@ -155,7 +155,7 @@ public class TilesStartActivity extends Activity {
             // ICI - A compléter pour déclencher l'ouverture de l'écran de paramétrage
 
             t.cancel();
-            music.stop();
+            //music.stop();
             setContentView(R.layout.settingbis);
             RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
             radioGroup.check(R.id.radioButton2);
@@ -175,8 +175,7 @@ public class TilesStartActivity extends Activity {
                     radioGroup.check(R.id.radioButton2);
 
             }
-            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-            {
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
                     // checkedId is the RadioButton selected
@@ -203,6 +202,26 @@ public class TilesStartActivity extends Activity {
                     createGame(Difficulte.values()[game.getDifficulte()]);
                 }
             });
+
+            final ImageButton sound = (ImageButton) findViewById(R.id.sound);
+            sound.setTag("music");
+            sound.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(sound.getTag() == "music"){
+                        music.pause();
+                        sound.setImageResource(R.drawable.mute);
+                        sound.setTag("mute");
+                    }
+                    else {
+                        music.start();
+                        sound.setImageResource(R.drawable.music);
+                        sound.setTag("music");
+                    }
+                }
+            });
+
             return true;
         }
 
@@ -245,7 +264,7 @@ public class TilesStartActivity extends Activity {
 
         setContentView(R.layout.game_over_bis);
         ((TextView)findViewById(R.id.textView2)).setText("Your score is " + this.game.getScore());
-        ((ImageButton)findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
+        (/*(ImageButton)*/findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createGame(Difficulte.values()[game.getDifficulte()]
