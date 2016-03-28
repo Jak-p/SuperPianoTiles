@@ -18,13 +18,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/sound"
-        android:tag="@string/music"
         android:src="@drawable/music"
         android:layout_toRightOf="@id/textView3"
         android:layout_marginTop="110dp"/>
 
     <!--android:src="@drawable/music"-->
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/musicChoice"
+        android:layout_below="@id/sound"
+        android:layout_toRightOf="@id/textView3"
+        android:entries="@array/music_array"/>
 
     <RadioGroup
         android:layout_width="wrap_content"
@@ -63,5 +69,13 @@
         android:layout_marginTop="153dp"--> />
 
 </RadioGroup>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton"
+        android:layout_alignEnd="@id/view"
+        android:layout_centerHorizontal="true"
+        android:text="RETRY"/>
 
 </RelativeLayout>

@@ -9,9 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.Timer;
@@ -20,7 +21,6 @@ import java.util.TimerTask;
 import fr.ups.sim.superpianotiles.events.TileAdapter;
 import fr.ups.sim.superpianotiles.events.TileCounter;
 import fr.ups.sim.superpianotiles.events.TileEvent;
-import fr.ups.sim.superpianotiles.events.TileListener;
 
 public class TilesStartActivity extends Activity {
 
@@ -66,7 +66,7 @@ public class TilesStartActivity extends Activity {
     public void createGame(Difficulte difficulte) {
         setContentView(R.layout.activity_tiles_start);
 
-        music = MediaPlayer.create(this,R.raw.music);
+        music = MediaPlayer.create(this,R.raw.cloud_atlas);
         music.start();
         this.game = new PianoTiles();
         this.game.setDifficulte(difficulte);
@@ -209,12 +209,11 @@ public class TilesStartActivity extends Activity {
                 @Override
                 public void onClick(View v) {
 
-                    if(sound.getTag() == "music"){
+                    if (sound.getTag() == "music") {
                         music.pause();
                         sound.setImageResource(R.drawable.mute);
                         sound.setTag("mute");
-                    }
-                    else {
+                    } else {
                         music.start();
                         sound.setImageResource(R.drawable.music);
                         sound.setTag("music");
@@ -222,6 +221,37 @@ public class TilesStartActivity extends Activity {
                 }
             });
 
+            final Spinner playlist = (Spinner)findViewById(R.id.musicChoice);
+            playlist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    music.stop();
+                    switch (playlist.getSelectedItem().toString()){
+                        case("Sextet - Cloud Atlas Soundtrack"):
+                            music = MediaPlayer.create(TilesStartActivity.this,R.raw.cloud_atlas);
+                            break;
+                        case("Let it Be - Beatles"):/* music.selectTrack(R.raw.beatles);*/
+                            music = MediaPlayer.create(TilesStartActivity.this,R.raw.beatles);
+                            break;
+                        case("Obstacles - Syd Matters"):/* music.selectTrack(R.raw.obstacles);*/
+                            music = MediaPlayer.create(TilesStartActivity.this,R.raw.obstacles);
+                            break;
+                        case("Lean On - Major Lazer ft. DJ Snake"):/* music.selectTrack(R.raw.lean_on);*/
+                            music = MediaPlayer.create(TilesStartActivity.this,R.raw.lean_on);
+                            break;
+                        case("See You Again - Wiz Khalifa"):/* music.selectTrack(R.raw.see_you_again);*/
+                            music = MediaPlayer.create(TilesStartActivity.this,R.raw.see_you_again);
+                            break;
+                        default : break;
+                    }
+                    music.start();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
             return true;
         }
 
