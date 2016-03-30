@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -48,7 +49,7 @@ public class TilesStartActivity extends Activity {
     private PianoTiles game;
     private TilesView tilesView;
     private Timer t;
-    private MediaPlayer music;
+    private MediaPlayer music = null;
     private MediaPlayer fail;
     private TileCounter senseur;
 
@@ -58,15 +59,17 @@ public class TilesStartActivity extends Activity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        createGame(Difficulte.MOYEN);
+        createGame(Difficulte.MOYEN,MediaPlayer.create(this,R.raw.cloud_atlas));
         
 
     }
 
-    public void createGame(Difficulte difficulte) {
+    public void createGame(Difficulte difficulte,MediaPlayer musique) {
         setContentView(R.layout.activity_tiles_start);
-
-        music = MediaPlayer.create(this,R.raw.cloud_atlas);
+        if(music != null){
+            if(music.isPlaying()){
+                music.stop();}}
+        music = musique;
         music.start();
         this.game = new PianoTiles();
         this.game.setDifficulte(difficulte);
@@ -199,7 +202,7 @@ public class TilesStartActivity extends Activity {
                             break;
                     }
 
-                    createGame(Difficulte.values()[game.getDifficulte()]);
+                    createGame(Difficulte.values()[game.getDifficulte()],MediaPlayer.create(TilesStartActivity.this,R.raw.cloud_atlas));
                 }
             });
 
@@ -221,34 +224,33 @@ public class TilesStartActivity extends Activity {
                 }
             });
 
-            final Spinner playlist = (Spinner)findViewById(R.id.musicChoice);
-            playlist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            final ListView playlist = (ListView)findViewById(R.id.listView);
+            playlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    music.stop();
-                    switch (playlist.getSelectedItem().toString()){
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //music.stop();
+                    MediaPlayer musique = null;
+                    switch (((TextView)view).getText().toString()){
                         case("Sextet - Cloud Atlas Soundtrack"):
-                            music = MediaPlayer.create(TilesStartActivity.this,R.raw.cloud_atlas);
+                            musique = MediaPlayer.create(TilesStartActivity.this,R.raw.cloud_atlas);
                             break;
-                        case("Let it Be - Beatles"):/* music.selectTrack(R.raw.beatles);*/
-                            music = MediaPlayer.create(TilesStartActivity.this,R.raw.beatles);
+                        case("Let it Be - Beatles"):
+                            musique = MediaPlayer.create(TilesStartActivity.this,R.raw.beatles);
                             break;
-                        case("Obstacles - Syd Matters"):/* music.selectTrack(R.raw.obstacles);*/
-                            music = MediaPlayer.create(TilesStartActivity.this,R.raw.obstacles);
+                        case("Obstacles - Syd Matters"):
+                            musique = MediaPlayer.create(TilesStartActivity.this,R.raw.obstacles);
                             break;
-                        case("Lean On - Major Lazer ft. DJ Snake"):/* music.selectTrack(R.raw.lean_on);*/
-                            music = MediaPlayer.create(TilesStartActivity.this,R.raw.lean_on);
+                        case("Lean On - Major Lazer ft. DJ Snake"):
+                            musique = MediaPlayer.create(TilesStartActivity.this,R.raw.lean_on);
                             break;
-                        case("See You Again - Wiz Khalifa"):/* music.selectTrack(R.raw.see_you_again);*/
-                            music = MediaPlayer.create(TilesStartActivity.this,R.raw.see_you_again);
+                        case("See You Again - Wiz Khalifa"):
+                            musique = MediaPlayer.create(TilesStartActivity.this,R.raw.see_you_again);
                             break;
                         default : break;
-                    }
-                    music.start();
-                }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                    createGame(Difficulte.values()[game.getDifficulte()],musique);
 
                 }
             });
@@ -297,7 +299,7 @@ public class TilesStartActivity extends Activity {
         (/*(ImageButton)*/findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createGame(Difficulte.values()[game.getDifficulte()]
+                createGame(Difficulte.values()[game.getDifficulte()], MediaPlayer.create(TilesStartActivity.this, R.raw.cloud_atlas)
                 );
             }
         });
