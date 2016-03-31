@@ -59,20 +59,22 @@ public class TilesStartActivity extends Activity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        createGame(Difficulte.MOYEN,MediaPlayer.create(this,R.raw.cloud_atlas));
+        createGame(Difficulte.MOYEN, R.raw.cloud_atlas);
+        game.setIdMusic(R.raw.cloud_atlas);
         
 
     }
 
-    public void createGame(Difficulte difficulte,MediaPlayer musique) {
+    public void createGame(Difficulte difficulte,int musique) {
         setContentView(R.layout.activity_tiles_start);
         if(music != null){
             if(music.isPlaying()){
                 music.stop();}}
-        music = musique;
+        music = MediaPlayer.create(this,musique);
         music.start();
         this.game = new PianoTiles();
         this.game.setDifficulte(difficulte);
+        this.game.setIdMusic(musique);
 
 
         //On récupère la view (JFrame en SWING) du jeu
@@ -202,7 +204,7 @@ public class TilesStartActivity extends Activity {
                             break;
                     }
 
-                    createGame(Difficulte.values()[game.getDifficulte()],MediaPlayer.create(TilesStartActivity.this,R.raw.cloud_atlas));
+                    createGame(Difficulte.values()[game.getDifficulte()],game.getIdMusic());
                 }
             });
 
@@ -230,22 +232,29 @@ public class TilesStartActivity extends Activity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     //music.stop();
-                    MediaPlayer musique = null;
+                    //MediaPlayer musique = null;
+                    int musique = 0;
                     switch (((TextView)view).getText().toString()){
                         case("Sextet - Cloud Atlas Soundtrack"):
-                            musique = MediaPlayer.create(TilesStartActivity.this,R.raw.cloud_atlas);
+                            //musique = MediaPlayer.create(TilesStartActivity.this,R.raw.cloud_atlas);
+                            musique = R.raw.cloud_atlas;
                             break;
                         case("Let it Be - Beatles"):
-                            musique = MediaPlayer.create(TilesStartActivity.this,R.raw.beatles);
+                            //musique = MediaPlayer.create(TilesStartActivity.this,R.raw.beatles);
+                            musique = R.raw.beatles;
+
                             break;
                         case("Obstacles - Syd Matters"):
-                            musique = MediaPlayer.create(TilesStartActivity.this,R.raw.obstacles);
+                            //musique = MediaPlayer.create(TilesStartActivity.this,R.raw.obstacles);
+                            musique = R.raw.obstacles;
                             break;
                         case("Lean On - Major Lazer ft. DJ Snake"):
-                            musique = MediaPlayer.create(TilesStartActivity.this,R.raw.lean_on);
+                            //musique = MediaPlayer.create(TilesStartActivity.this,R.raw.lean_on);
+                            musique = R.raw.lean_on;
                             break;
                         case("See You Again - Wiz Khalifa"):
-                            musique = MediaPlayer.create(TilesStartActivity.this,R.raw.see_you_again);
+                            //musique = MediaPlayer.create(TilesStartActivity.this,R.raw.see_you_again);
+                            musique = R.raw.see_you_again;
                             break;
                         default : break;
 
@@ -299,7 +308,7 @@ public class TilesStartActivity extends Activity {
         (/*(ImageButton)*/findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createGame(Difficulte.values()[game.getDifficulte()], MediaPlayer.create(TilesStartActivity.this, R.raw.cloud_atlas)
+                createGame(Difficulte.values()[game.getDifficulte()], game.getIdMusic()
                 );
             }
         });

@@ -1,5 +1,7 @@
 package fr.ups.sim.superpianotiles;
 
+import android.media.MediaPlayer;
+
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Random;
@@ -10,12 +12,13 @@ import java.util.Set;
  */
 public class PianoTiles {
 
-    private Set<Tiles> tilesList = new LinkedHashSet<Tiles>();
+    private Set<Tiles> tilesList = new LinkedHashSet<>();
     private int score;
     private Tiles nextTile;
     private int lastAdded;
     protected Random rand;
     private Difficulte dif;
+    private int idMusic;
 
     public PianoTiles() {
         this.score = 0;
@@ -23,6 +26,7 @@ public class PianoTiles {
         this.nextTile = null;
         this.lastAdded = 0;
         this.dif = Difficulte.MOYEN;
+        //this.idMusic = R.raw.cloud_atlas;
     }
 
     public void newTile() {
@@ -104,4 +108,13 @@ public class PianoTiles {
     public int getDifficulte() {
         return this.dif.ordinal();
     }
+
+    public int getIdMusic(){
+        return idMusic;
+    }
+
+    public void setIdMusic(int musique){
+        this.idMusic = musique;
+    }
+
 }
