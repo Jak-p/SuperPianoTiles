@@ -29,14 +29,23 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <ImageButton
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageButton"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
         android:text="RETRY"
-        android:src="@drawable/m"/>
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menu"
+        android:id="@+id/button5"
+        android:layout_marginTop="47dp"
+        android:layout_below="@+id/imageButton"
+        android:layout_centerHorizontal="true" />
+    <!--android:src="@drawable/m"/>-->
 
 
 </RelativeLayout>

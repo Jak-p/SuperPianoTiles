@@ -59,13 +59,33 @@ public class TilesStartActivity extends Activity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        createGame(Difficulte.MOYEN, R.raw.cloud_atlas);
+        createMenu(Difficulte.MOYEN, R.raw.cloud_atlas);
         game.setIdMusic(R.raw.cloud_atlas);
         
 
     }
 
-    public void createGame(Difficulte difficulte,int musique) {
+
+
+
+    public void createMenu(final Difficulte difficulte, final int musique) {
+
+        setContentView(R.layout.menu_start);
+
+        this.game = new PianoTiles();
+        this.game.setDifficulte(difficulte);
+        this.game.setIdMusic(musique);
+
+        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createGame(difficulte,musique);
+            }
+        });
+    }
+
+    public void createGame(Difficulte difficulte,int musique){
+
         setContentView(R.layout.activity_tiles_start);
         if(music != null){
             if(music.isPlaying()){
@@ -204,7 +224,7 @@ public class TilesStartActivity extends Activity {
                             break;
                     }
 
-                    createGame(Difficulte.values()[game.getDifficulte()],game.getIdMusic());
+                        createGame(Difficulte.values()[game.getDifficulte()], game.getIdMusic());
                 }
             });
 
@@ -259,8 +279,7 @@ public class TilesStartActivity extends Activity {
                         default : break;
 
                     }
-                    createGame(Difficulte.values()[game.getDifficulte()],musique);
-
+                        createGame(Difficulte.values()[game.getDifficulte()], musique);
                 }
             });
             return true;
@@ -305,11 +324,16 @@ public class TilesStartActivity extends Activity {
 
         setContentView(R.layout.game_over_bis);
         ((TextView)findViewById(R.id.textView2)).setText("Your score is " + this.game.getScore());
-        (/*(ImageButton)*/findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.imageButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createGame(Difficulte.values()[game.getDifficulte()], game.getIdMusic()
-                );
+                    createGame(Difficulte.values()[game.getDifficulte()], game.getIdMusic());
+            }
+        });
+        findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createMenu(Difficulte.values()[game.getDifficulte()], game.getIdMusic());
             }
         });
     }
